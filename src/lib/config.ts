@@ -66,12 +66,12 @@ export type DeviceModel =
 //   web3 / crypto        → dark-premium | retrofuturism
 
 export const APP_CONFIG = {
-  appName: "App Name",                       // Display name (sidebar header, page title)
-  projectName: "Project Name",               // Client's product name (tab bar microtext, footer)
-  clientName: null as string | null,         // Client first name, or null — never render "null"
-  domain: "tech",                            // Domain (finance, health, marketplace, tech, etc.)
-  aesthetic: "linear" as AestheticProfile,   // Drives data-theme="..." on <html>
-  demoFormat: "dashboard-app" as DemoFormat,          // Layout architecture for Tab 1
+  appName: "IntegriHub",                              // Short branded name (sidebar header, page title)
+  projectName: "Systems Integrity Audit",             // Client's project name (tab bar microtext, footer)
+  clientName: null as string | null,                  // Client first name, or null — never render "null"
+  domain: "tech",                                     // Domain classification
+  aesthetic: "data-dense" as AestheticProfile,        // Drives data-theme="..." on <html>
+  demoFormat: "admin-console" as DemoFormat,           // Layout architecture for Tab 1
   deviceModel: undefined as DeviceModel | undefined,  // Device frame model (frame formats only)
   screenCount: undefined as number | undefined,       // Number of screens in frame demos
 } as const;

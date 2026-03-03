@@ -6,13 +6,19 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { APP_CONFIG } from "@/lib/config";
 import {
-  LayoutDashboard,
+  Activity,
   ChevronLeft,
   ChevronRight,
   Lightbulb,
   User,
   ArrowRight,
   Github,
+  RefreshCw,
+  Database,
+  AlertTriangle,
+  Webhook,
+  BarChart3,
+  ShieldCheck,
 } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -23,19 +29,20 @@ import {
 // ═══════════════════════════════════════════════════════════════════════════
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  // Dashboard Builder agent: add 3-5 feature page nav items here.
-  // Example: { href: "/orders", label: "Orders", icon: ShoppingCart },
+  { href: "/", label: "System Overview", icon: Activity },
+  { href: "/sync-monitor", label: "Sync Monitor", icon: RefreshCw },
+  { href: "/source-of-truth", label: "Source of Truth", icon: Database },
+  { href: "/drift-detection", label: "Drift Detection", icon: AlertTriangle },
+  { href: "/webhook-logs", label: "Webhook Logs", icon: Webhook },
+  { href: "/observability", label: "Observability", icon: BarChart3 },
 ];
 
 function SidebarLogo({ collapsed }: { collapsed: boolean }) {
   return (
     <div className="p-4 border-b border-border/60 flex items-center gap-3">
-      {/* Agent: replace the letter icon with a relevant Lucide icon if appropriate */}
-      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-        <span className="text-primary font-bold text-sm font-mono">
-          {APP_CONFIG.appName.charAt(0)}
-        </span>
+      {/* ShieldCheck icon — systems integrity / audit domain */}
+      <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
+        <ShieldCheck className="w-4 h-4 text-primary" />
       </div>
       {!collapsed && (
         <div className="overflow-hidden">
