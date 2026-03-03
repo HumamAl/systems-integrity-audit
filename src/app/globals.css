@@ -1,0 +1,991 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   @theme inline — wires CSS variables to Tailwind utility classes.
+   DO NOT change variable names here. Change values in :root or
+   [data-theme] blocks below.
+   ============================================================ */
+@theme inline {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Radius scale — derived from single --radius token */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Animation keyframes */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+
+  /* Frame dimensions — mapped to Tailwind utilities */
+  --frame-width: var(--frame-width);
+  --frame-height: var(--frame-height);
+}
+
+/* ============================================================
+   :root — Default token values (Linear / Minimal aesthetic baseline).
+   Layout Builder overrides color tokens per domain.
+   Aesthetic [data-theme] blocks below override all other tokens.
+   ============================================================ */
+:root {
+  /* ── Border Radius ───────────────────────────────────────────
+     Profiles: sharp = 0.25rem | standard = 0.5rem | rounded = 0.75rem
+     Layout Builder sets to match domain personality.            */
+  --radius: 0.5rem;
+
+  /* ── Base Surfaces ───────────────────────────────────────── */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --surface-hover: oklch(0.96 0 0);
+  --surface-active: oklch(0.94 0 0);
+
+  /* ── Primary Color ───────────────────────────────────────────
+     !! OVERRIDE REQUIRED — Layout Builder must replace --primary and
+        --primary-h with domain-appropriate oklch values.
+        See references/design-system.md for the 14-domain color table.
+        QA rejects builds where --primary stays oklch(0.205 0 0). !! */
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --primary-h: 270; /* Integer hue extracted from --primary */
+
+  /* ── Derived Color Tokens ────────────────────────────────── */
+  --section-dark: oklch(0.10 0.02 var(--primary-h));
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  /* ── Semantic Colors ─────────────────────────────────────── */
+  --destructive: oklch(0.577 0.245 27.325);
+  --success: oklch(0.627 0.194 149.214);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.769 0.188 70.08);
+  --warning-foreground: oklch(0.205 0 0);
+
+  /* ── Borders & Inputs ────────────────────────────────────── */
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* ── Chart Colors ────────────────────────────────────────────
+     Layout Builder harmonizes to primary hue. See design-system.md. */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  /* ── Sidebar Colors ──────────────────────────────────────────
+     After color override: --sidebar-primary and --sidebar-ring
+     should match --primary.                                     */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ── Surface / Card Tokens ───────────────────────────────────
+     Driven by [data-theme] aesthetic — not overridden per domain.
+     .linear-card and .aesthetic-card read these.                */
+  --card-border-width: 1px;
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --card-backdrop: none;
+  --card-hover-transform: none;
+
+  /* ── Spacing / Density Tokens ────────────────────────────────
+     Layout Builder overrides for compact / standard / spacious feel.
+
+     Compact:  --nav-item-py: 0.375rem, --content-padding: 1rem,   --card-padding: 1rem
+     Standard: --nav-item-py: 0.5rem,   --content-padding: 1.5rem, --card-padding: 1.5rem
+     Spacious: --nav-item-py: 0.625rem, --content-padding: 2rem,   --card-padding: 1.5rem */
+  --page-padding: 1.5rem;
+  --card-padding: 1.5rem;
+  --card-padding-sm: 1rem;
+  --grid-gap: 1rem;
+  --section-gap: 1.5rem;
+
+  /* ── Layout Tokens ───────────────────────────────────────────
+     Sidebar width presets:
+       Slim:     14rem — compact utility or data-dense apps
+       Standard: 16rem — default
+       Wide:     18rem — complex nav, ERP-style
+
+     Header height presets:
+       Compact:  2.75rem
+       Standard: 3.5rem                                           */
+  --sidebar-width: 16rem;
+  --sidebar-collapsed-width: 4rem;
+  --sidebar-width-mobile: 18rem;
+  --header-height: 3.5rem;
+  --tab-bar-height: 49px;    /* 48px + 1px border */
+  --content-padding: 1.5rem;
+  --nav-item-py: 0.5rem;
+
+  /* Sidebar surface — override to tint sidebar by domain:
+     White (default): oklch(1 0 0)
+     Tinted:          oklch(0.985 0.008 var(--primary-h))
+     Subdued:         oklch(0.97 0.005 var(--primary-h))          */
+  --sidebar-bg: oklch(1 0 0);
+
+  /* Tab bar background — tint to primary hue subtly if desired */
+  --tab-bar-bg: var(--background);
+
+  /* ── Typography Tokens ───────────────────────────────────── */
+  --font-display: var(--font-geist-sans);
+  --font-body: var(--font-geist-sans);
+  --heading-weight: 700;
+  --heading-tracking: -0.025em;
+  --heading-transform: none;
+  --body-weight: 400;
+  --body-tracking: 0em;
+  --body-leading: 1.625;
+
+  /* ── Motion Tokens ───────────────────────────────────────────
+     All transitions in components use these — never hardcode
+     duration-200+ or ease-in values directly.                   */
+  --dur-fast: 100ms;
+  --dur-normal: 150ms;
+  --dur-slow: 250ms;
+  --dur-deliberate: 400ms;
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+  --t-page: var(--dur-normal) var(--ease-smooth);
+
+  /* ── Demo Format Frame Tokens ─────────────────────────────
+     Defaults for sidebar-dashboard (no frame). Override per
+     [data-format] block below. */
+  --frame-width: 100%;
+  --frame-height: 100%;
+  --frame-radius: 0;
+  --frame-border-width: 0;
+  --frame-border-color: transparent;
+  --frame-bg: transparent;
+  --frame-shadow: none;
+  --screen-width: 375px;
+  --screen-height: 812px;
+  --screen-radius: 2.5rem;
+  --screen-bg: var(--background);
+  --screen-nav-height: 3.5rem;
+  --screen-statusbar-height: 2.75rem;
+  --showcase-split: 50%;
+  --showcase-context-bg: var(--section-dark, oklch(0.10 0.02 0));
+  --showcase-context-padding: 3rem;
+}
+
+/* ============================================================
+   .dark — Kept for shadcn/ui compatibility only.
+   Apps are light-only. Do NOT add a dark mode toggle.
+   ============================================================ */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.696 0.17 162.48);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.769 0.188 70.08);
+  --warning-foreground: oklch(0.145 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* ============================================================
+   [data-theme] AESTHETIC PROFILES
+   ============================================================
+   Applied to <html data-theme="..."> in the root layout.
+   APP_CONFIG.aesthetic drives this attribute.
+   Each block overrides only the tokens that differ from :root.
+
+   14 aesthetics:
+     linear            — snappy, border-first, dev-tool feel
+     bold-editorial    — type-as-design, dramatic whitespace
+     warm-organic      — rounded, earth tones, breathing room
+     corporate-enterprise — dense, structured, authoritative
+     dark-premium      — dark canvas, controlled accent glow
+     swiss-typographic — grid-precise, zero ornament
+     glassmorphism     — frosted panels, layered depth
+     neobrutalism      — thick borders, offset hard shadows
+     nature-wellness   — green, calm, generous space
+     data-dense        — compact, monospace, max information
+     saas-modern       — friendly gradients, conversion-focused
+     e-commerce        — product-first, conversion-optimized
+     brand-forward     — expressive, personality-driven
+     retrofuturism     — chrome, neon, dark canvas
+
+   Industry-to-aesthetic routing in references/design-diversity.md.
+   ============================================================ */
+
+/* ── 1. Linear / Minimal ─────────────────────────────────────
+   The current default aesthetic. Snappy, precise, border-first.
+   Best for: dev tools, B2B SaaS, AI/ML, internal tooling.       */
+[data-theme="linear"] {
+  --radius: 0.5rem;
+  --card-border-width: 1px;
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --card-hover-transform: none;
+  --page-padding: 1.5rem;
+  --content-padding: 1.5rem;
+  --grid-gap: 1rem;
+  --section-gap: 1.5rem;
+  --heading-weight: 700;
+  --heading-tracking: -0.025em;
+  --dur-fast: 80ms;
+  --dur-normal: 100ms;
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 2. Bold Editorial ───────────────────────────────────────
+   Type is the hero. Dramatic whitespace. Sharp edges.
+   Best for: media, publishing, creative agencies, fashion.       */
+[data-theme="bold-editorial"] {
+  --radius: 0rem;
+  --card-border-width: 0px;
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --card-hover-transform: none;
+  --page-padding: 3rem;
+  --content-padding: 3rem;
+  --card-padding: 2rem;
+  --grid-gap: 1.5rem;
+  --section-gap: 3rem;
+  --nav-item-py: 0.625rem;
+  --sidebar-width: 18rem;
+  --heading-weight: 900;
+  --heading-tracking: -0.04em;
+  --heading-transform: none;
+  --body-leading: 1.75;
+  --dur-fast: 200ms;
+  --dur-normal: 350ms;
+  --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 3. Warm Organic ─────────────────────────────────────────
+   Rounded, earth tones, soft shadows, room to breathe.
+   Best for: food, D2C consumer, community, education.            */
+[data-theme="warm-organic"] {
+  --radius: 1rem;
+  --background: oklch(0.99 0.005 80);
+  --card: oklch(0.995 0.003 80);
+  --border: oklch(0.90 0.02 80);
+  --muted: oklch(0.96 0.01 80);
+  --sidebar: oklch(0.975 0.008 80);
+  --sidebar-bg: oklch(0.975 0.008 80);
+  --surface-hover: oklch(0.95 0.01 80);
+  --surface-active: oklch(0.93 0.015 80);
+  --card-border-width: 1px;
+  --card-shadow: 0 1px 4px oklch(0 0 0 / 0.05);
+  --card-shadow-hover: 0 4px 12px oklch(0 0 0 / 0.08);
+  --card-hover-transform: translateY(-1px);
+  --page-padding: 2rem;
+  --content-padding: 2rem;
+  --card-padding: 1.5rem;
+  --grid-gap: 1.25rem;
+  --section-gap: 2rem;
+  --nav-item-py: 0.625rem;
+  --heading-weight: 600;
+  --heading-tracking: -0.01em;
+  --body-leading: 1.75;
+  --dur-fast: 150ms;
+  --dur-normal: 200ms;
+  --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 4. Corporate Enterprise ─────────────────────────────────
+   Dense, structured, authoritative. Max information per pixel.
+   Best for: ERP, CRM, legal, compliance, healthcare B2B.        */
+[data-theme="corporate-enterprise"] {
+  --radius: 0.25rem;
+  --background: oklch(0.99 0 0);
+  --card: oklch(1 0 0);
+  --border: oklch(0.88 0 0);
+  --muted: oklch(0.96 0 0);
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-bg: oklch(0.97 0 0);
+  --surface-hover: oklch(0.95 0 0);
+  --surface-active: oklch(0.93 0 0);
+  --card-border-width: 1px;
+  --card-shadow: 0 1px 2px oklch(0 0 0 / 0.06);
+  --card-shadow-hover: 0 2px 6px oklch(0 0 0 / 0.10);
+  --card-hover-transform: none;
+  --page-padding: 1rem;
+  --content-padding: 1rem;
+  --card-padding: 1rem;
+  --card-padding-sm: 0.75rem;
+  --grid-gap: 0.75rem;
+  --section-gap: 1rem;
+  --nav-item-py: 0.375rem;
+  --sidebar-width: 14rem;
+  --header-height: 3rem;
+  --heading-weight: 600;
+  --heading-tracking: -0.01em;
+  --body-leading: 1.5;
+  --dur-fast: 60ms;
+  --dur-normal: 100ms;
+  --ease-snappy: cubic-bezier(0.25, 0, 0.25, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 5. Dark Premium ─────────────────────────────────────────
+   Dark canvas, controlled accent light, exclusive feel.
+   Best for: AI/ML, cybersecurity, fintech trading, luxury tech.
+   Note: Layout Builder sets --primary to a vivid accent.
+         --primary-h must be set for derived dark surfaces.      */
+[data-theme="dark-premium"] {
+  --radius: 0.75rem;
+  --background: oklch(0.08 0.01 var(--primary-h, 250));
+  --foreground: oklch(0.92 0 0);
+  --card: oklch(0.12 0.01 var(--primary-h, 250));
+  --card-foreground: oklch(0.92 0 0);
+  --popover: oklch(0.12 0.01 var(--primary-h, 250));
+  --popover-foreground: oklch(0.92 0 0);
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(1 0 0 / 0.25);
+  --muted: oklch(0.16 0.01 var(--primary-h, 250));
+  --muted-foreground: oklch(0.60 0 0);
+  --secondary: oklch(0.16 0.01 var(--primary-h, 250));
+  --secondary-foreground: oklch(0.92 0 0);
+  --accent: oklch(0.16 0.02 var(--primary-h, 250));
+  --accent-foreground: oklch(0.92 0 0);
+  --sidebar: oklch(0.10 0.01 var(--primary-h, 250));
+  --sidebar-foreground: oklch(0.85 0 0);
+  --sidebar-border: oklch(1 0 0 / 0.08);
+  --sidebar-bg: oklch(0.10 0.01 var(--primary-h, 250));
+  --section-dark: oklch(0.06 0.02 var(--primary-h, 250));
+  --surface-hover: oklch(1 0 0 / 0.05);
+  --surface-active: oklch(1 0 0 / 0.08);
+  --card-border-width: 1px;
+  --card-shadow: 0 0 0 1px oklch(1 0 0 / 0.06), inset 0 1px 0 oklch(1 0 0 / 0.08);
+  --card-shadow-hover: 0 0 0 1px oklch(1 0 0 / 0.12), 0 4px 16px oklch(0 0 0 / 0.30);
+  --card-hover-transform: none;
+  --page-padding: 2rem;
+  --content-padding: 2rem;
+  --grid-gap: 1rem;
+  --section-gap: 2rem;
+  --heading-weight: 600;
+  --heading-tracking: -0.02em;
+  --dur-fast: 120ms;
+  --dur-normal: 200ms;
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 6. Swiss / Typographic ──────────────────────────────────
+   Grid is law. Zero ornament. Type carries the aesthetic.
+   Best for: architecture, cultural institutions, publishing.    */
+[data-theme="swiss-typographic"] {
+  --radius: 0rem;
+  --background: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --border: oklch(0.15 0 0);
+  --muted: oklch(0.96 0 0);
+  --sidebar: oklch(1 0 0);
+  --sidebar-bg: oklch(1 0 0);
+  --sidebar-border: oklch(0.15 0 0);
+  --surface-hover: oklch(0.96 0 0);
+  --surface-active: oklch(0.93 0 0);
+  --card-border-width: 2px;
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --card-hover-transform: none;
+  --page-padding: 2rem;
+  --content-padding: 2rem;
+  --card-padding: 1.5rem;
+  --grid-gap: 1.5rem;
+  --section-gap: 2rem;
+  --nav-item-py: 0.5rem;
+  --heading-weight: 700;
+  --heading-tracking: -0.02em;
+  --heading-transform: none;
+  --body-leading: 1.625;
+  --dur-fast: 80ms;
+  --dur-normal: 120ms;
+  --ease-snappy: cubic-bezier(0.25, 0, 0.25, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 7. Glassmorphism ────────────────────────────────────────
+   Frosted panels floating over colorful backgrounds.
+   Best for: consumer fintech, travel, lifestyle, wellness apps.
+   Note: App background should be a gradient or image for effect. */
+[data-theme="glassmorphism"] {
+  --radius: 0.75rem;
+  --card: oklch(1 0 0 / 0.15);
+  --card-foreground: oklch(0.145 0 0);
+  --border: oklch(1 0 0 / 0.25);
+  --sidebar-border: oklch(1 0 0 / 0.20);
+  --surface-hover: oklch(1 0 0 / 0.12);
+  --surface-active: oklch(1 0 0 / 0.18);
+  --card-border-width: 1px;
+  --card-shadow: 0 8px 32px oklch(0 0 0 / 0.12);
+  --card-shadow-hover: 0 12px 40px oklch(0 0 0 / 0.18);
+  --card-backdrop: blur(20px);
+  --card-hover-transform: translateY(-2px);
+  --page-padding: 2rem;
+  --content-padding: 2rem;
+  --card-padding: 1.5rem;
+  --grid-gap: 1.25rem;
+  --section-gap: 2rem;
+  --heading-weight: 600;
+  --heading-tracking: -0.015em;
+  --dur-fast: 150ms;
+  --dur-normal: 250ms;
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 8. NeoBrutalism ─────────────────────────────────────────
+   Thick borders, offset hard shadows, raw physical energy.
+   Best for: creative tools, indie SaaS, youth-facing products.  */
+[data-theme="neobrutalism"] {
+  --radius: 0.25rem;
+  --background: oklch(0.98 0.01 85);
+  --card: oklch(1 0 0);
+  --border: oklch(0.10 0 0);
+  --muted: oklch(0.93 0.02 85);
+  --secondary: oklch(0.93 0.02 85);
+  --sidebar: oklch(0.96 0.02 85);
+  --sidebar-bg: oklch(0.96 0.02 85);
+  --sidebar-border: oklch(0.10 0 0);
+  --surface-hover: oklch(0.93 0.02 85);
+  --surface-active: oklch(0.90 0.03 85);
+  --card-border-width: 2px;
+  --card-shadow: 4px 4px 0 oklch(0.10 0 0);
+  --card-shadow-hover: 6px 6px 0 oklch(0.10 0 0);
+  --card-hover-transform: translate(-2px, -2px);
+  --page-padding: 1.5rem;
+  --content-padding: 1.5rem;
+  --card-padding: 1.25rem;
+  --grid-gap: 1rem;
+  --section-gap: 1.5rem;
+  --nav-item-py: 0.5rem;
+  --heading-weight: 900;
+  --heading-tracking: -0.03em;
+  --heading-transform: none;
+  --dur-fast: 60ms;
+  --dur-normal: 80ms;
+  --ease-snappy: cubic-bezier(0.25, 0, 0, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 9. Nature / Wellness ────────────────────────────────────
+   Green, calm, generous space, anti-anxiety pacing.
+   Best for: mental health, fitness, nutrition, eco brands.      */
+[data-theme="nature-wellness"] {
+  --radius: 1.5rem;
+  --background: oklch(0.985 0.008 145);
+  --card: oklch(0.995 0.005 145);
+  --border: oklch(0.90 0.015 145);
+  --muted: oklch(0.96 0.01 145);
+  --secondary: oklch(0.94 0.02 145);
+  --sidebar: oklch(0.975 0.012 145);
+  --sidebar-bg: oklch(0.975 0.012 145);
+  --sidebar-border: oklch(0.90 0.015 145);
+  --surface-hover: oklch(0.97 0.01 145);
+  --surface-active: oklch(0.95 0.015 145);
+  --card-border-width: 1px;
+  --card-shadow: 0 2px 8px oklch(0 0 0 / 0.05);
+  --card-shadow-hover: 0 6px 16px oklch(0 0 0 / 0.08);
+  --card-hover-transform: translateY(-1px);
+  --page-padding: 2.5rem;
+  --content-padding: 2.5rem;
+  --card-padding: 2rem;
+  --grid-gap: 1.5rem;
+  --section-gap: 2.5rem;
+  --nav-item-py: 0.625rem;
+  --sidebar-width: 16rem;
+  --heading-weight: 600;
+  --heading-tracking: -0.01em;
+  --body-leading: 1.8;
+  --dur-fast: 200ms;
+  --dur-normal: 350ms;
+  --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 10. Data Dense / Command Center ─────────────────────────
+   Compact, monospace metrics, maximum information per pixel.
+   Best for: DevOps, analytics/BI, financial trading, monitoring. */
+[data-theme="data-dense"] {
+  --radius: 0.25rem;
+  --background: oklch(0.99 0 0);
+  --card: oklch(1 0 0);
+  --border: oklch(0.86 0 0);
+  --muted: oklch(0.96 0 0);
+  --sidebar: oklch(0.975 0 0);
+  --sidebar-bg: oklch(0.975 0 0);
+  --sidebar-border: oklch(0.86 0 0);
+  --surface-hover: oklch(0.94 0 0);
+  --surface-active: oklch(0.91 0 0);
+  --card-border-width: 1px;
+  --card-shadow: none;
+  --card-shadow-hover: 0 1px 4px oklch(0 0 0 / 0.08);
+  --card-hover-transform: none;
+  --page-padding: 0.75rem;
+  --content-padding: 0.75rem;
+  --card-padding: 0.75rem;
+  --card-padding-sm: 0.5rem;
+  --grid-gap: 0.5rem;
+  --section-gap: 0.75rem;
+  --nav-item-py: 0.3125rem;
+  --sidebar-width: 13rem;
+  --header-height: 2.75rem;
+  --heading-weight: 600;
+  --heading-tracking: -0.01em;
+  --body-leading: 1.4;
+  --dur-fast: 60ms;
+  --dur-normal: 100ms;
+  --ease-snappy: cubic-bezier(0.25, 0, 0.25, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 11. SaaS Modern / Gradient-Optimistic ───────────────────
+   Friendly, approachable, conversion-focused, subtle gradients.
+   Best for: B2B SaaS, HR tech, marketing tech, e-learning.      */
+[data-theme="saas-modern"] {
+  --radius: 0.75rem;
+  --background: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --border: oklch(0.92 0 0);
+  --muted: oklch(0.97 0 0);
+  --sidebar: oklch(0.99 0.005 var(--primary-h, 250));
+  --sidebar-bg: oklch(0.99 0.005 var(--primary-h, 250));
+  --surface-hover: oklch(0.96 0 0);
+  --surface-active: oklch(0.94 0 0);
+  --card-border-width: 1px;
+  --card-shadow: 0 1px 3px oklch(0 0 0 / 0.08), 0 1px 2px oklch(0 0 0 / 0.04);
+  --card-shadow-hover: 0 4px 12px oklch(0 0 0 / 0.12), 0 2px 4px oklch(0 0 0 / 0.06);
+  --card-hover-transform: translateY(-1px);
+  --page-padding: 1.5rem;
+  --content-padding: 1.5rem;
+  --card-padding: 1.5rem;
+  --grid-gap: 1rem;
+  --section-gap: 2rem;
+  --nav-item-py: 0.5rem;
+  --heading-weight: 700;
+  --heading-tracking: -0.02em;
+  --body-leading: 1.625;
+  --dur-fast: 120ms;
+  --dur-normal: 200ms;
+  --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 12. E-Commerce / Conversion Retail ─────────────────────
+   Product-first, clean, conversion-optimized.
+   Best for: D2C brands, marketplace platforms, retail.          */
+[data-theme="e-commerce"] {
+  --radius: 0.5rem;
+  --background: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --border: oklch(0.92 0 0);
+  --muted: oklch(0.97 0 0);
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-bg: oklch(0.98 0 0);
+  --surface-hover: oklch(0.96 0 0);
+  --surface-active: oklch(0.94 0 0);
+  --card-border-width: 1px;
+  --card-shadow: 0 1px 3px oklch(0 0 0 / 0.06);
+  --card-shadow-hover: 0 4px 16px oklch(0 0 0 / 0.10);
+  --card-hover-transform: translateY(-1px);
+  --page-padding: 1.5rem;
+  --content-padding: 1.5rem;
+  --card-padding: 1rem;
+  --grid-gap: 1rem;
+  --section-gap: 1.5rem;
+  --nav-item-py: 0.5rem;
+  --heading-weight: 700;
+  --heading-tracking: -0.02em;
+  --dur-fast: 100ms;
+  --dur-normal: 150ms;
+  --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 13. Brand Forward / Expressive ──────────────────────────
+   Personality-driven. Bold but accessible. Soft neo-brutalism.
+   Best for: creative tools, indie products, Gumroad/DTC style.  */
+[data-theme="brand-forward"] {
+  --radius: 0.75rem;
+  --background: oklch(0.98 0.01 var(--primary-h, 85));
+  --card: oklch(1 0 0);
+  --border: oklch(0.10 0 0);
+  --muted: oklch(0.94 0.02 var(--primary-h, 85));
+  --sidebar: oklch(0.96 0.015 var(--primary-h, 85));
+  --sidebar-bg: oklch(0.96 0.015 var(--primary-h, 85));
+  --sidebar-border: oklch(0.10 0 0);
+  --surface-hover: oklch(0.94 0.02 var(--primary-h, 85));
+  --surface-active: oklch(0.91 0.03 var(--primary-h, 85));
+  --card-border-width: 2px;
+  --card-shadow: 3px 3px 0 oklch(0.10 0 0);
+  --card-shadow-hover: 5px 5px 0 oklch(0.10 0 0);
+  --card-hover-transform: translate(-1px, -1px);
+  --page-padding: 1.5rem;
+  --content-padding: 1.5rem;
+  --card-padding: 1.25rem;
+  --grid-gap: 1rem;
+  --section-gap: 1.5rem;
+  --heading-weight: 800;
+  --heading-tracking: -0.025em;
+  --dur-fast: 80ms;
+  --dur-normal: 120ms;
+  --ease-snappy: cubic-bezier(0.25, 0, 0, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ── 14. Retrofuturism / Y2K Revival ─────────────────────────
+   Chrome, neon, dark canvas, high-energy iridescent.
+   Best for: gaming, entertainment, web3, youth fashion.         */
+[data-theme="retrofuturism"] {
+  --radius: 0rem;
+  --background: oklch(0.08 0.02 270);
+  --foreground: oklch(0.95 0.01 270);
+  --card: oklch(0.12 0.03 270);
+  --card-foreground: oklch(0.95 0.01 270);
+  --popover: oklch(0.12 0.03 270);
+  --popover-foreground: oklch(0.95 0.01 270);
+  --border: oklch(0.70 0.20 280 / 0.5);
+  --input: oklch(0.18 0.03 270);
+  --ring: oklch(0.75 0.22 280 / 0.8);
+  --muted: oklch(0.16 0.03 270);
+  --muted-foreground: oklch(0.65 0.05 270);
+  --secondary: oklch(0.16 0.03 270);
+  --secondary-foreground: oklch(0.95 0 0);
+  --accent: oklch(0.16 0.05 270);
+  --accent-foreground: oklch(0.95 0 0);
+  --sidebar: oklch(0.10 0.03 270);
+  --sidebar-foreground: oklch(0.90 0.02 270);
+  --sidebar-border: oklch(0.70 0.20 280 / 0.4);
+  --sidebar-bg: oklch(0.10 0.03 270);
+  --section-dark: oklch(0.06 0.03 270);
+  --surface-hover: oklch(1 0 0 / 0.06);
+  --surface-active: oklch(1 0 0 / 0.10);
+  --card-border-width: 1px;
+  --card-shadow: 0 0 12px oklch(0.70 0.22 280 / 0.25);
+  --card-shadow-hover: 0 0 20px oklch(0.70 0.22 280 / 0.45);
+  --card-hover-transform: none;
+  --page-padding: 1.5rem;
+  --content-padding: 1.5rem;
+  --card-padding: 1.25rem;
+  --grid-gap: 1rem;
+  --section-gap: 1.5rem;
+  --heading-weight: 900;
+  --heading-tracking: -0.03em;
+  --dur-fast: 80ms;
+  --dur-normal: 120ms;
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-interactive: var(--dur-fast) var(--ease-snappy);
+}
+
+/* ============================================================
+   [data-format] — Demo format overrides.
+   Applied on the (app)/layout.tsx wrapper, orthogonal to [data-theme].
+   Controls frame dimensions, device chrome, and layout structure.
+   ============================================================ */
+
+[data-format="mobile-app-preview"] {
+  --frame-width: 375px;
+  --frame-height: 812px;
+  --frame-radius: 3rem;
+  --frame-border-width: 8px;
+  --frame-border-color: oklch(0.15 0 0);
+  --frame-bg: oklch(0.08 0 0);
+  --frame-shadow: 0 25px 50px oklch(0 0 0 / 0.25);
+}
+
+[data-format="multi-screen-walkthrough"] {
+  --frame-width: min(960px, 90vw);
+  --frame-height: min(640px, 70vh);
+  --frame-radius: 0.75rem;
+  --frame-border-width: 1px;
+  --frame-border-color: oklch(0.85 0 0);
+  --frame-bg: oklch(0.96 0 0);
+  --frame-shadow: 0 20px 40px oklch(0 0 0 / 0.15);
+}
+
+[data-format="split-panel-demo"] {
+  --showcase-split: 40%;
+  --showcase-context-padding: 2.5rem;
+}
+
+[data-format="landing-page"] {
+  --content-padding: 0;
+}
+
+[data-format="admin-console"] {
+  --content-padding: 0.75rem;
+  --sidebar-width: 3.5rem;
+}
+
+/* ── Dark theme format adjustments ─────────────────────────── */
+[data-theme="dark-premium"] [data-format="mobile-app-preview"],
+[data-theme="retrofuturism"] [data-format="mobile-app-preview"] {
+  --frame-border-color: oklch(0.25 0 0);
+  --frame-bg: oklch(0.12 0 0);
+}
+
+[data-theme="dark-premium"] [data-format="multi-screen-walkthrough"],
+[data-theme="retrofuturism"] [data-format="multi-screen-walkthrough"] {
+  --frame-border-color: oklch(0.25 0 0);
+  --frame-bg: oklch(0.12 0 0);
+  --frame-shadow: 0 20px 40px oklch(0 0 0 / 0.4);
+}
+
+/* ============================================================
+   GLOBAL BASE STYLES
+   ============================================================ */
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: var(--ring);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body, var(--font-geist-sans));
+    font-weight: var(--body-weight, 400);
+    letter-spacing: var(--body-tracking, 0em);
+    line-height: var(--body-leading, 1.625);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display, var(--font-geist-sans));
+    font-weight: var(--heading-weight, 700);
+    letter-spacing: var(--heading-tracking, -0.025em);
+    text-transform: var(--heading-transform, none);
+  }
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+@layer components {
+
+  /* ── .linear-card / .aesthetic-card ─────────────────────────
+     Primary card surface. Token-driven — adapts to any aesthetic.
+     .linear-card is kept as an alias for backward compatibility.
+     New code should use .aesthetic-card.
+
+     DO NOT add: rounded-xl, shadow-sm+, hover:-translate-y-*
+     These are all subsumed into CSS tokens above.               */
+  .linear-card,
+  .aesthetic-card {
+    border-radius: var(--radius-lg, var(--radius));
+    border: var(--card-border-width, 1px) solid color-mix(in oklch, var(--border), transparent 40%);
+    background: var(--card);
+    box-shadow: var(--card-shadow, none);
+    backdrop-filter: var(--card-backdrop, none);
+    -webkit-backdrop-filter: var(--card-backdrop, none);
+    transition:
+      border-color var(--t-interactive),
+      box-shadow var(--t-interactive),
+      transform var(--t-interactive);
+  }
+  .linear-card:hover,
+  .aesthetic-card:hover {
+    border-color: color-mix(in oklch, var(--primary), transparent 70%);
+    box-shadow: var(--card-shadow-hover, var(--card-shadow, none));
+    transform: var(--card-hover-transform, none);
+  }
+
+  /* ── .linear-hover / .aesthetic-hover ───────────────────────
+     Interactive row / nav item hover surface.
+     Reads --surface-hover token — no hardcoded color.           */
+  .linear-hover,
+  .aesthetic-hover {
+    transition: background-color var(--t-interactive);
+  }
+  .linear-hover:hover,
+  .aesthetic-hover:hover {
+    background-color: var(--surface-hover);
+  }
+
+  /* ── .aesthetic-card-glass ───────────────────────────────────
+     Glass variant for glassmorphism aesthetic.
+     Requires a colorful/vibrant background to show through.
+     Only use when data-theme="glassmorphism".                   */
+  .aesthetic-card-glass {
+    background: var(--card);
+    backdrop-filter: var(--card-backdrop, blur(20px));
+    -webkit-backdrop-filter: var(--card-backdrop, blur(20px));
+    border: 1px solid color-mix(in oklch, var(--border), transparent 20%);
+    border-radius: var(--radius-xl, calc(var(--radius) + 4px));
+    box-shadow: var(--card-shadow, none);
+    transition:
+      box-shadow var(--t-interactive),
+      transform var(--t-interactive);
+  }
+  .aesthetic-card-glass:hover {
+    box-shadow: var(--card-shadow-hover, var(--card-shadow, none));
+    transform: var(--card-hover-transform, none);
+  }
+
+  /* ── .aesthetic-heading ──────────────────────────────────────
+     Heading treatment driven by typography tokens.
+     Apply to section titles or hero text.                       */
+  .aesthetic-heading {
+    font-family: var(--font-display, var(--font-geist-sans));
+    font-weight: var(--heading-weight, 700);
+    letter-spacing: var(--heading-tracking, -0.025em);
+    text-transform: var(--heading-transform, none);
+  }
+
+  /* ── .aesthetic-transition ───────────────────────────────────
+     Apply to any interactive element that needs theme-correct timing. */
+  .aesthetic-transition {
+    transition-duration: var(--dur-normal);
+    transition-timing-function: var(--ease-snappy);
+  }
+
+  /* ── .stats-grid ─────────────────────────────────────────────
+     Responsive stat card grid. Token-driven gap.                */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--grid-gap, 1rem);
+  }
+
+  /* ── .page-container ─────────────────────────────────────────
+     Standard page content wrapper. Reads --content-padding.     */
+  .page-container {
+    padding: var(--content-padding, 1.5rem);
+  }
+
+  /* ── Neobrutalism / Brand-Forward press animation ─────────────
+     Hard-shadow collapse on :active — physical press feedback.
+     Only meaningful in aesthetics with offset box shadows.      */
+  [data-theme="neobrutalism"] .linear-card:active,
+  [data-theme="neobrutalism"] .aesthetic-card:active,
+  [data-theme="brand-forward"] .linear-card:active,
+  [data-theme="brand-forward"] .aesthetic-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 oklch(0.10 0 0);
+  }
+
+}
+
+/* ── Frame utility classes ─────────────────────────────────── */
+.device-frame-content {
+  --content-scale: 0.85;
+  --content-padding: 0.75rem;
+}
+
+.frame-responsive {
+  transform: scale(1);
+  transform-origin: top center;
+}
+
+@media (max-width: 768px) {
+  .frame-responsive {
+    transform: scale(0.75);
+  }
+}
+
+@media (max-width: 480px) {
+  .frame-responsive {
+    transform: scale(0.55);
+  }
+}
