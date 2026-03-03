@@ -1,6 +1,6 @@
 Hi,
 
-Paid visibility silently drifting from CRM state is a derived-vs-stored state problem — and the fix starts with a source-of-truth ownership matrix. Built a working architecture audit dashboard for your setup before reaching out: {VERCEL_URL}
+Paid visibility silently drifting from CRM state is a derived-vs-stored state problem — and the fix starts with a source-of-truth ownership matrix. Built a working architecture audit dashboard for your setup before reaching out: https://systems-integrity-audit.vercel.app
 
 It shows sync event logs across your 5 platforms, drift detection between Firebase and HubSpot, and a canonical ownership map — the Phase 1 deliverable you described.
 
